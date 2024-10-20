@@ -1,0 +1,38 @@
+// src/components/SendTransaction.js
+import React, { useState } from 'react';
+
+const SendTransaction = ({ web3, contract, account }) => {
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
+
+  const sendTokens = async () => {
+    try {
+      await contract.methods.transfer(recipient, web3.utils.toWei(amount, 'ether')).send({ from: account });
+      alert('Transaction successful!');
+    } catch (error) {
+      alert('Transaction failed');
+      console.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Send BaseTokens</h2>
+      <input
+        type="text"
+        placeholder="Recipient Address"
+        value={recipient}
+        onChange={(e) => setRecipient(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+      />
+      <button onClick={sendTokens}>Send</button>
+    </div>
+  );
+};
+
+export default SendTransaction;
